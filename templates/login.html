@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+
+{% import "_formhelpers.html" as forms %}
+
+{% block title %}Login{% endblock %}
+
+{% block extra_css %}
+
+<style>
+    body {
+        background-image: url("{{ url_for('static', filename='images/login-bg.png') }}");
+    }
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="form-container">
+
+    <div class="form-box">
+
+        <h3>Welcome Back!</h3>
+
+        <form method="POST">
+
+            {{ form.hidden_tag() }}
+
+            {{ forms.render_field(form.username) }}
+            {{ forms.render_field(form.password) }}
+            
+            {{ forms.render_flashes() }}
+
+
+            <div class="text-end mb-3">
+                <a href="{{ url_for('forgot_password') }}">
+                    Forgot your password?
+                </a>
+            </div>
+
+            {{ form.submit(class="btn btn-primary submit-button") }}
+
+        </form>
+
+        <div class="text-center mt-4">
+
+            <p>Don't have an account?</p>
+
+            <a href="{{ url_for('register') }}" class="btn btn-outline-secondary">
+                Sign Up
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

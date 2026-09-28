@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+
+{% import "_formhelpers.html" as forms %}
+
+{% block title %}Password Recovery{% endblock %}
+
+{% block extra_css %}
+
+<style>
+    body {
+        background-image: url("{{ url_for('static', filename='images/forget-bg.jpg') }}");
+    }
+</style>
+
+{% endblock %}
+
+{% block content %}
+
+<div class="form-container">
+
+    <div class="form-box">
+
+        <h3>Verification Code</h3>
+        <h6>A verification code has been sent to {{ email }}</h6>
+        <h6>The code will expire in 10 minutes.</h6>
+
+        <form method="POST">
+
+            {{ form.hidden_tag() }}
+
+            {{ forms.render_field(form.code) }}
+
+            {{ forms.render_flashes() }}
+
+            {{ form.submit(class="btn btn-info submit-button") }}
+
+        </form>
+
+    </div>
+
+</div>
+
+{% endblock %}

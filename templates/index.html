@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% import "_formhelpers.html" as forms %}
+
+{% block title %}My Tasks{% endblock %}
+
+{% block extra_css %}
+<style>
+    body {
+        background-image: url("{{ url_for('static', filename='images/main-bg.png') }}");
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="todo-container">
+
+    <div class="todo-box">
+
+        <div class="todo-header">
+            <h2>{{ current_user.username }} Tasks</h2>
+            <h6>{{ date }}</h6>
+        </div>
+
+        <!-- Tasks -->
+        {% for task in tasks %}
+
+        <div class="task">
+
+            <div class="d-flex align-items-center gap-2">
+                {% if task.completed %}✅{% endif %}
+                <p class="task-name {% if task.completed %}completed{% endif %}">
+                    {{ task.title }}
+                </p>
+
+            </div>
+
+
+            <div class="task-buttons">
+
+                {% if not task.completed %}
+                <form method="POST" action="{{ url_for('mark_task', task_id=task.id) }}">
+                    {{ mark_task.hidden_tag() }}
+                    {{ mark_task.done(class="btn btn-sm btn-success") }}
+                </form>
+                {% endif %}
+                
+                <form method="POST" action="{{ url_for('delete_task', task_id=task.id) }}">
+                    {{ delete_task.hidden_tag() }}
+                    {{ delete_task.delete(class="btn btn-sm btn-danger") }}
+                </form>
+            </div>
+
+        </div>
+
+        {% else %}
+            <p class="text-center">
+                You don't have any tasks yet.
+            </p>
+        {% endfor %}
+
+        {% if tasks %}
+        <form method="POST">
+            {{ delete_all.hidden_tag() }}
+            {{ delete_all.delete_all(class="btn btn-danger") }}
+        </form>
+        {% endif %}
+
+        <form method="POST">
+            {{ form.hidden_tag() }}
+            {{ forms.render_field(form.task) }}
+        
+            {{ form.add(class="btn btn-primary submit-button") }}
+
+        </form>
+        
+    </div>
+
+</div>
+
+{% endblock %}
